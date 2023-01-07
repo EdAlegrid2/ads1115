@@ -72,14 +72,14 @@ let vds = exports.vds = function(){
 	let data1 = rbuf[1];
 	let data2 = rbuf[2];
 
-  let v = data0 << 8 | data1;
+  	let v = data0 << 8 | data1;
 	
 	if(v < 0){
 		v = 0;	
 	}
   
-  /* pulse the led to indicate the conversion process (optional) */
-  led.pulse(500);    
+  	/* pulse the led to indicate the conversion process (optional) */
+  	led.pulse(500);    
 
 	let val = v * vps;
 	let value = val.toFixed(2); // result should be rounded to 2 decimal places e.g 2.34, 1.48 V
