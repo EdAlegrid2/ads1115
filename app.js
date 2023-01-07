@@ -3,7 +3,7 @@ const r = require('array-gpio');
 let i2c = r.startI2C(1);    // using SDA1 and SCL1 pins (pin 3 & 5)
 
 /* led conversion indicator (optional) */
-let led = r.out(33); 
+//let led = r.out(33); 
 
 /* set data transfer speed to 200 kHz */
 i2c.setTransferSpeed(200000);
@@ -64,7 +64,7 @@ let vds = exports.vds = function(){
 	}
   
   	/* pulse the led to indicate the conversion process (optional) */
-  	led.pulse(500);    
+  	//led.pulse(500);    
 
 	let val = v * vps;
 	let value = val.toFixed(2); // result should be rounded to 2 decimal places e.g 2.34, 1.48 V
