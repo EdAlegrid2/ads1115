@@ -1,18 +1,3 @@
-
-## Raspberry Pi communication with ADS1115/1015 ADC 16/12 BIT I2C using array-gpio library
-
-In this example, we will measure the Raspberry Pi 5V supply voltage using ADC1115/1015 ADC I2C module. We will use the array-gpio library to communicate with the ADS1115/1015 ADC. We will also use a simple potentiometer to simulate different voltage level for measurement. 
-
-![](assets/ads1115.svg)
-
-## Setup
-
-### 1. Create a project directory and install array-gpio.
-```js
-$ npm install array-gpio
-```
-### 2. Save the code below as app.js in your project directory.
-```js
 const r = require('array-gpio');
 
 let i2c = r.startI2C(1);    // using SDA1 and SCL1 pins (pin 3 & 5)
@@ -85,16 +70,4 @@ let vds = exports.vds = function(){
 	return val;
 }
 console.log('voltage value', vds());
-
-```
-### 3. Start your application.
-```js
-$ node app.js
-```
-
-### 4. The expected output should be 0 to 4 V.
-```js
-$ voltage value 2.43 
-```
-
 
