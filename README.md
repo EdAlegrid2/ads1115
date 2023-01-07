@@ -84,7 +84,7 @@ let vds = exports.vds = function(){
 	let val = v * vps;
 	let value = val.toFixed(2); // result should be rounded to 2 decimal places e.g 2.34, 1.48 V
 
-	return val;
+	return value;
 }
 
 console.log('voltage value', vds());
