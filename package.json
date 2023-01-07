@@ -1,0 +1,46 @@
+{
+  "name": "ads1115",
+  "version": "1.0.0",
+  "description": "Raspberry Pi communication with ADS1115/1015 ADC I2C",
+  "dependencies": {
+    "array-gpio": "^1.7.1"
+  },
+  "license": "GNU GENERAL PUBLIC LICENSE v3",
+  "engines": {
+    "node": ">= 8.0.0"
+  },
+  "author": {
+    "name": "Ed Alegrid"
+  },
+  "keywords": [
+    "bcm2835",
+    "gpio",
+    "pi",
+    "iot",
+    "rpi",
+    "raspberry",
+    "raspberry pi",
+    "rpi",
+    "rpio",
+    "onoff",
+    "pwm",
+    "i2c",
+    "spi",
+    "m2m",
+    "aws",
+    "faas",
+    "telematics",
+    "industry 4.0",
+    "telemetry",
+    "SCADA",
+    "remote",
+    "automation",  
+    "remote control",
+    "node-m2m",
+    "microservices",
+    "distributed-systems",
+    "pub-sub",
+    "machine-to-machine",
+    "industrial control system"
+  ]
+}
