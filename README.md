@@ -92,7 +92,7 @@ console.log('voltage value', vds());
 ```
 ### 3. Start your application.
 ```js
-$ node app.js
+$ sudo node app.js
 ```
 
 ### 4. The expected output should be 0 to 4 V.
