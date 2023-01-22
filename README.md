@@ -1,7 +1,7 @@
 ## Raspberry Pi communication with ADS1115/1015 ADC 16/12 BIT I2C using array-gpio library
 
 In this example, we will measure the Raspberry Pi 5V supply voltage using ADC1115/1015 ADC I2C module. We will use the array-gpio library to communicate with the ADS1115/1015 ADC. We will also use a simple potentiometer to simulate different voltage level for measurement. 
-Note: Input voltage should not exceed 5V supply voltage;
+Note: Input voltage should not exceed 5V supply voltage.
 
 ![](assets/ads1115.svg)
 
