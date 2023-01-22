@@ -1,21 +1,7 @@
-
-## Raspberry Pi communication with ADS1115/1015 ADC 16/12 BIT I2C using array-gpio library
-
-In this example, we will measure the Raspberry Pi 5V supply voltage using ADC1115/1015 ADC I2C module. We will use the array-gpio library to communicate with the ADS1115/1015 ADC. We will also use a simple potentiometer to simulate different voltage level for measurement. 
-
-![](assets/ads1115.svg)
-
-## Setup
-
-### 1. Create a project directory and install array-gpio.
-```js
-$ npm install array-gpio
-```
-### 2. Save the code below as app.js in your project directory.
-```js
 const r = require('array-gpio');
 
 let i2c = r.startI2C(1);    // using SDA1 and SCL1 pins (pin 3 & 5)
+//let i2c = r.startI2C(0);  // Using SDA0 and SCL0 pins (pin 27 & 28)
 
 /* led conversion indicator (optional) */
 //let led = r.out(33); 
@@ -31,22 +17,24 @@ const wbuf = Buffer.alloc(16); // write buffer
 const rbuf = Buffer.alloc(16); // read buffer
 
 /* access config register */
-wbuf[0] = 1; // config register address 
+wbuf[0] = 0x1; // config register address 
 
 /* MSB data to be written to config register */
-wbuf[1] = 0b11000010;   // continous conversion using A0 input
-//wbuf[1] = 0b11000011;	// single shot conversion using A0 input
+wbuf[1] = 0b11000010;   // continous conversion using AIN0 input
+//wbuf[1] = 0b11000011;	// single shot conversion using AIN0 input
   // bit 15 flag bit for single shot
   // Bits 14-12 input selection:
   // 100 ANC0; 101 ANC1; 110 ANC2; 111 ANC3
-  // Bits 11-9 Amp gain. Default to 010 here 001 P19
-  // Bit 8 Operational mode of the ADS1115.
+  // Bits 11-9 Amp gain. Defaults to 010. In this example, we'll set it to 001 : FSR = ±4.096 V
+  // Bit 8 Operational mode
   // 0 : Continuous conversion mode
   // 1 : Power-down single-shot mode (default)
 
-/* using A1 input */
-//wbuf[1] = 0b11010011; // single shot conversion using A1 input 
-//wbuf[1] = 0b11010010;	// continous conversion using A1 input
+/* using AIN1 input */
+//wbuf[1] = 0b11010011; // single shot conversion using AIN1 input 
+//wbuf[1] = 0b11010010;	// continous conversion using AIN1 input
+//wbuf[1] = 0b11010011; // single shot conversion using AIN1 input 
+//wbuf[1] = 0b11010010;	// continous conversion using AIN1 input
 
 /* LSB data to be written to config register */
 wbuf[2] = 0b10000101;
@@ -57,47 +45,38 @@ wbuf[2] = 0b10000101;
 i2c.write(wbuf, 3); 
 
 /* access the conversion register  */
-wbuf[0] = 0; // conversion register address
+wbuf[0] = 0x0; // conversion register address
 i2c.write(wbuf, 1);
 
-// volts per step
-const vps = 4.096 / 32768.0;
+/* smallest voltage resolution per step or LSB (Least-significant bit) - the smallest level that an ADC can convert
+ * below is some info from datasheet for single-ended input only (AIN0~AIN3 to ground) */
+const vps = 4.096/32768;  // for ads1115 where FS ADC value is 7FFFh = 32768, expected value is 1.25 mV where LSB = FSR/2
+//const vps = 4.096/32752;  // for ads1015 where FS ADC value is 7FF0h = 32752, expected value is ~1.25 mV where LSB = FSR/2
 
-// voltage data source
+/* calculate voltage data source */
 let vds = exports.vds = function(){
 
-	i2c.read(rbuf, 3);
+    /* start reading the conversion register */
+	i2c.read(rbuf, 2);
 
-	let data0 = rbuf[0]; 
-	let data1 = rbuf[1];
-	let data2 = rbuf[2];
+	let msb = rbuf[0]; // MSB data of conversion register
+	let lsb = rbuf[1]; // LSB data of conversion register
 
-  	let v = data0 << 8 | data1;
+    // adc value
+  	let adc = msb << 8 | lsb;
 	
-	if(v < 0){
-		v = 0;	
+	if(adc < 0){
+		adc = 0;	
 	}
   
   	/* pulse the led to indicate the conversion process (optional) */
   	//led.pulse(500);    
 
-	let val = v * vps;
+	let val = adc * vps;
 	let value = val.toFixed(2); // result should be rounded to 2 decimal places e.g 2.34, 1.48 V
 
 	return value;
 }
 
 console.log('voltage value', vds());
-
-```
-### 3. Start your application.
-```js
-$ sudo node app.js
-```
-
-### 4. The expected output should be 0 to 4 V.
-```js
-$ voltage value 2.43 
-```
-
 
