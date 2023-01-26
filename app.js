@@ -1,6 +1,7 @@
 const r = require('array-gpio');
 
 let i2c = r.startI2C(1);    // using SDA1 and SCL1 pins (pin 3 & 5)
+//let i2c = r.startI2C(0);    // using SDA0 and SCL0 pins (pin 27 & 28)
 
 /* led conversion indicator (optional) */
 //let led = r.out(33); 
